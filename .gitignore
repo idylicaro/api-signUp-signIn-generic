@@ -8,6 +8,9 @@ typings/
 # TypeScript cache
 *.tsbuildinfo
 
+# jest coverage
+coverage/
+
 # Optional npm cache directory
 .npm
 
@@ -26,3 +29,4 @@ dist
 
 # Gatsby files
 .cache/
+
