@@ -1,5 +1,5 @@
 {
-  "name": "condominium-api",
+  "name": "shop-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -32,13 +32,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/idylicaro/Condominium.git"
+    "url": "git+https://github.com/idylicaro/api-shop.git"
   },
   "keywords": [],
   "author": "IdylIcaro <idylicaro.se@hotmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/idylicaro/Condominium/issues"
+    "url": "https://github.com/idylicaro/api-shop/issues"
   },
-  "homepage": "https://github.com/idylicaro/Condominium#readme"
+  "homepage": "https://github.com/idylicaro/api-shop#readme"
 }
