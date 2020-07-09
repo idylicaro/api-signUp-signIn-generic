@@ -1,5 +1,6 @@
 import { Controller } from '../../protocols/controller'
 import { HttpRequest, HttpResponse } from '../../protocols/http'
+import { ok } from '../../helpers/http-helper'
 
 export class SignUpController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -12,9 +13,6 @@ export class SignUpController implements Controller {
         }))
       }
     }
-    return await new Promise(resolve => resolve({
-      statusCode: 200,
-      body: httpRequest.body
-    }))
+    return ok(httpRequest.body)
   }
 }
