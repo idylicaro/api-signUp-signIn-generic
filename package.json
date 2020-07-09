@@ -1,5 +1,5 @@
 {
-  "name": "hotel-api",
+  "name": "api-signUp-signIn-generic",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -32,13 +32,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/idylicaro/api-shop.git"
+    "url": "git+https://github.com/idylicaro/api-signUp-signIn-generic.git"
   },
   "keywords": [],
   "author": "IdylIcaro <idylicaro.se@hotmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/idylicaro/api-shop/issues"
+    "url": "https://github.com/idylicaro/api-signUp-signIn-generic/issues"
   },
-  "homepage": "https://github.com/idylicaro/api-shop#readme"
+  "homepage": "https://github.com/idylicaro/api-signUp-signIn-generic#readme"
 }
