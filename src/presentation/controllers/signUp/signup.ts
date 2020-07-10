@@ -13,6 +13,13 @@ export class SignUpController implements Controller {
         }))
       }
     }
+    const { password, passwordConfirmation } = httpRequest.body
+    if (password !== passwordConfirmation) {
+      return await new Promise(resolve => resolve({
+        statusCode: 400,
+        body: httpRequest.body
+      }))
+    }
     return ok(httpRequest.body)
   }
 }
