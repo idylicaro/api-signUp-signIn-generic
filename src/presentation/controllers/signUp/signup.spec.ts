@@ -33,6 +33,21 @@ describe('SignUp Controller', () => {
     const httpRequest = {
       body: {
         email: 'any_email@mail.com',
+        phone: 'any_phonenumber',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+  })
+
+  test('Should return 400 if phone is not passed', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email@mail.com',
         password: 'any_password',
         passwordConfirmation: 'any_password'
       }
@@ -46,6 +61,7 @@ describe('SignUp Controller', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
+        phone: 'any_phonenumber',
         password: 'any_password',
         passwordConfirmation: 'any_password'
       }
@@ -59,6 +75,7 @@ describe('SignUp Controller', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
+        phone: 'any_phonenumber',
         email: 'any_email@mail.com',
         passwordConfirmation: 'any_password'
       }
@@ -72,6 +89,7 @@ describe('SignUp Controller', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
+        phone: 'any_phonenumber',
         email: 'any_email@mail.com',
         password: 'any_password'
       }
@@ -85,6 +103,7 @@ describe('SignUp Controller', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
+        phone: 'any_phonenumber',
         email: 'any_email@mail.com',
         password: 'any_password',
         passwordConfirmation: 'different_password'
@@ -100,6 +119,7 @@ describe('SignUp Controller', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
+        phone: 'any_phonenumber',
         email: 'invalid_email@mail.com',
         password: 'any_password',
         passwordConfirmation: 'any_password'
