@@ -1,12 +1,12 @@
 import { Controller } from '../../protocols/controller'
 import { HttpRequest, HttpResponse } from '../../protocols/http'
 import { ok } from '../../helpers/http-helper'
-import { Validator } from '../../protocols/validator'
+import { EmailValidator } from '../../protocols/email-validator'
 
 export class SignUpController implements Controller {
-  private readonly validator: Validator
-  constructor (validator: Validator) {
-    this.validator = validator
+  private readonly emailValidator: EmailValidator
+  constructor (emailValidator: EmailValidator) {
+    this.emailValidator = emailValidator
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -26,7 +26,7 @@ export class SignUpController implements Controller {
         body: httpRequest.body
       }))
     }
-    if (!this.validator.isValid(email)) {
+    if (!this.emailValidator.isValid(email)) {
       return await new Promise(resolve => resolve({
         statusCode: 400,
         body: httpRequest.body

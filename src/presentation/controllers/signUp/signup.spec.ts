@@ -1,6 +1,6 @@
 
 import { SignUpController } from './signup'
-import { Validator } from '../../protocols/validator'
+import { EmailValidator } from '../../protocols/email-validator'
 import { HttpRequest } from '../../protocols/http'
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -13,28 +13,28 @@ const makeFakeRequest = (): HttpRequest => ({
   }
 })
 
-const makeValidator = (): Validator => {
+const makeEmailValidator = (): EmailValidator => {
   // factory
-  class ValidatorStub implements Validator {
+  class EmailValidatorStub implements EmailValidator {
     // mock  type stub
     isValid (email: string): boolean {
       return true
     }
   }
-  return new ValidatorStub()
+  return new EmailValidatorStub()
 }
 
 interface SutTypes {
   sut: SignUpController
-  validatorStub: Validator
+  emailValidatorStub: EmailValidator
 }
 
 const makeSut = (): SutTypes => {
-  const validatorStub = makeValidator()
-  const sut = new SignUpController(validatorStub)
+  const emailValidatorStub = makeEmailValidator()
+  const sut = new SignUpController(emailValidatorStub)
   return {
     sut,
-    validatorStub
+    emailValidatorStub
   }
 }
 
@@ -125,8 +125,8 @@ describe('SignUp Controller', () => {
   })
 
   test('Should return 400 if email is not valid', async () => {
-    const { sut, validatorStub } = makeSut()
-    jest.spyOn(validatorStub, 'isValid').mockReturnValueOnce(false)
+    const { sut, emailValidatorStub } = makeSut()
+    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
     const httpRequest = {
       body: {
         name: 'any_name',
@@ -141,8 +141,8 @@ describe('SignUp Controller', () => {
   })
 
   test('Should call EmailValidator with correct email', async () => {
-    const { sut, validatorStub } = makeSut()
-    const isValidSpy = jest.spyOn(validatorStub, 'isValid')
+    const { sut, emailValidatorStub } = makeSut()
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
     await sut.handle(makeFakeRequest())
     expect(isValidSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
