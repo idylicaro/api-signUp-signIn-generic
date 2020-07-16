@@ -1,6 +1,7 @@
 
 import { SignUpController } from './signup'
 import { EmailValidator } from '../../protocols/email-validator'
+import { PhoneValidator } from '../../protocols/phone-validator'
 import { HttpRequest } from '../../protocols/http'
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -12,6 +13,17 @@ const makeFakeRequest = (): HttpRequest => ({
     passwordConfirmation: 'any_password'
   }
 })
+
+const makePhoneValidator = (): PhoneValidator => {
+  // factory
+  class PhoneValidatorStub implements PhoneValidator {
+    // mock  type stub
+    isValid (phone: string): boolean {
+      return true
+    }
+  }
+  return new PhoneValidatorStub()
+}
 
 const makeEmailValidator = (): EmailValidator => {
   // factory
@@ -27,14 +39,17 @@ const makeEmailValidator = (): EmailValidator => {
 interface SutTypes {
   sut: SignUpController
   emailValidatorStub: EmailValidator
+  phoneValidatorStub: PhoneValidator
 }
 
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidator()
-  const sut = new SignUpController(emailValidatorStub)
+  const phoneValidatorStub = makePhoneValidator()
+  const sut = new SignUpController(emailValidatorStub, phoneValidatorStub)
   return {
     sut,
-    emailValidatorStub
+    emailValidatorStub,
+    phoneValidatorStub
   }
 }
 
@@ -132,6 +147,22 @@ describe('SignUp Controller', () => {
         name: 'any_name',
         phone: 'any_phonenumber',
         email: 'invalid_email@mail.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+  })
+
+  test('Should return 400 if phone is not valid', async () => {
+    const { sut, phoneValidatorStub } = makeSut()
+    jest.spyOn(phoneValidatorStub, 'isValid').mockReturnValueOnce(false)
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        phone: 'invalid_phonenumber',
+        email: 'any_email@mail.com',
         password: 'any_password',
         passwordConfirmation: 'any_password'
       }
