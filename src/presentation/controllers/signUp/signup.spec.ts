@@ -1,6 +1,7 @@
 
 import { SignUpController } from './signup'
 import { HttpRequest, EmailValidator, PhoneValidator } from './signup-protocols'
+import { ServerError } from '../../erros'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -181,5 +182,15 @@ describe('SignUp Controller', () => {
     const isValidSpy = jest.spyOn(phoneValidatorStub, 'isValid')
     await sut.handle(makeFakeRequest())
     expect(isValidSpy).toHaveBeenCalledWith('any_phonenumber')
+  })
+
+  test('Should return 500 if EmailValidator throws', async () => {
+    const { sut, emailValidatorStub } = makeSut()
+    jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError(null))
   })
 })
