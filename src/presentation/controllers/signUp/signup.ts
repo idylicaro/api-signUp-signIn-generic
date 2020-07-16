@@ -1,5 +1,6 @@
 import { HttpResponse, HttpRequest, Controller, EmailValidator, PhoneValidator } from './signup-protocols'
-import { ok, serverError } from '../../helpers/http-helper'
+import { MissingParamError, InvalidParamError } from '../../erros'
+import { ok, serverError, badRequest } from '../../helpers/http-helper'
 
 export class SignUpController implements Controller {
   private readonly emailValidator: EmailValidator
@@ -14,30 +15,18 @@ export class SignUpController implements Controller {
       const requiredFields = ['name', 'phone', 'email', 'password', 'passwordConfirmation']
       for (const field of requiredFields) {
         if (!httpRequest.body[field]) {
-          return await new Promise(resolve => resolve({
-            statusCode: 400,
-            body: httpRequest.body
-          }))
+          return badRequest(new MissingParamError(field))
         }
       }
       const { email, phone, password, passwordConfirmation } = httpRequest.body
       if (password !== passwordConfirmation) {
-        return await new Promise(resolve => resolve({
-          statusCode: 400,
-          body: httpRequest.body
-        }))
+        return badRequest(new InvalidParamError('passwordConfirmation'))
       }
       if (!this.emailValidator.isValid(email)) {
-        return await new Promise(resolve => resolve({
-          statusCode: 400,
-          body: httpRequest.body
-        }))
+        return badRequest(new InvalidParamError('email'))
       }
       if (!this.phoneValidator.isValid(phone)) {
-        return await new Promise(resolve => resolve({
-          statusCode: 400,
-          body: httpRequest.body
-        }))
+        return badRequest(new InvalidParamError('phone'))
       }
       return ok(httpRequest.body)
     } catch (error) {
