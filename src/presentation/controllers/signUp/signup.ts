@@ -1,5 +1,5 @@
 import { HttpResponse, HttpRequest, Controller, EmailValidator, PhoneValidator } from './signup-protocols'
-import { ok } from '../../helpers/http-helper'
+import { ok, serverError } from '../../helpers/http-helper'
 
 export class SignUpController implements Controller {
   private readonly emailValidator: EmailValidator
@@ -10,34 +10,38 @@ export class SignUpController implements Controller {
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const requiredFields = ['name', 'phone', 'email', 'password', 'passwordConfirmation']
-    for (const field of requiredFields) {
-      if (!httpRequest.body[field]) {
+    try {
+      const requiredFields = ['name', 'phone', 'email', 'password', 'passwordConfirmation']
+      for (const field of requiredFields) {
+        if (!httpRequest.body[field]) {
+          return await new Promise(resolve => resolve({
+            statusCode: 400,
+            body: httpRequest.body
+          }))
+        }
+      }
+      const { email, phone, password, passwordConfirmation } = httpRequest.body
+      if (password !== passwordConfirmation) {
         return await new Promise(resolve => resolve({
           statusCode: 400,
           body: httpRequest.body
         }))
       }
+      if (!this.emailValidator.isValid(email)) {
+        return await new Promise(resolve => resolve({
+          statusCode: 400,
+          body: httpRequest.body
+        }))
+      }
+      if (!this.phoneValidator.isValid(phone)) {
+        return await new Promise(resolve => resolve({
+          statusCode: 400,
+          body: httpRequest.body
+        }))
+      }
+      return ok(httpRequest.body)
+    } catch (error) {
+      return serverError(error)
     }
-    const { email, phone, password, passwordConfirmation } = httpRequest.body
-    if (password !== passwordConfirmation) {
-      return await new Promise(resolve => resolve({
-        statusCode: 400,
-        body: httpRequest.body
-      }))
-    }
-    if (!this.emailValidator.isValid(email)) {
-      return await new Promise(resolve => resolve({
-        statusCode: 400,
-        body: httpRequest.body
-      }))
-    }
-    if (!this.phoneValidator.isValid(phone)) {
-      return await new Promise(resolve => resolve({
-        statusCode: 400,
-        body: httpRequest.body
-      }))
-    }
-    return ok(httpRequest.body)
   }
 }
