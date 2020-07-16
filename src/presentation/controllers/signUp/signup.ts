@@ -1,8 +1,5 @@
-import { Controller } from '../../protocols/controller'
-import { HttpRequest, HttpResponse } from '../../protocols/http'
+import { HttpResponse, HttpRequest, Controller, EmailValidator, PhoneValidator } from './signup-protocols'
 import { ok } from '../../helpers/http-helper'
-import { EmailValidator } from '../../protocols/email-validator'
-import { PhoneValidator } from '../../protocols/phone-validator'
 
 export class SignUpController implements Controller {
   private readonly emailValidator: EmailValidator

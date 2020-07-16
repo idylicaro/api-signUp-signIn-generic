@@ -1,8 +1,6 @@
 
 import { SignUpController } from './signup'
-import { EmailValidator } from '../../protocols/email-validator'
-import { PhoneValidator } from '../../protocols/phone-validator'
-import { HttpRequest } from '../../protocols/http'
+import { HttpRequest, EmailValidator, PhoneValidator } from './signup-protocols'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
