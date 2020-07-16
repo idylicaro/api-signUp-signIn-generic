@@ -177,4 +177,11 @@ describe('SignUp Controller', () => {
     await sut.handle(makeFakeRequest())
     expect(isValidSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
+
+  test('Should call PhoneValidator with correct phone', async () => {
+    const { sut, phoneValidatorStub } = makeSut()
+    const isValidSpy = jest.spyOn(phoneValidatorStub, 'isValid')
+    await sut.handle(makeFakeRequest())
+    expect(isValidSpy).toHaveBeenCalledWith('any_phonenumber')
+  })
 })
