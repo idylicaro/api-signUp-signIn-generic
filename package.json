@@ -40,5 +40,8 @@
   "bugs": {
     "url": "https://github.com/idylicaro/api-signUp-signIn-generic/issues"
   },
-  "homepage": "https://github.com/idylicaro/api-signUp-signIn-generic#readme"
+  "homepage": "https://github.com/idylicaro/api-signUp-signIn-generic#readme",
+  "dependencies": {
+    "validator": "^13.1.1"
+  }
 }
