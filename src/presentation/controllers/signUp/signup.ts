@@ -30,7 +30,7 @@ export class SignUpController implements Controller {
       if (!this.phoneValidator.isValid(phone)) {
         return badRequest(new InvalidParamError('phone'))
       }
-      const account = this.addAccount.add({
+      const account = await this.addAccount.add({
         name,
         phone,
         email,
