@@ -42,6 +42,7 @@
   },
   "homepage": "https://github.com/idylicaro/api-signUp-signIn-generic#readme",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "validator": "^13.1.1"
   }
 }
