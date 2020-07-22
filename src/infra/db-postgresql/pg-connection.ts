@@ -1,6 +1,7 @@
 import knex from 'knex'
 import connectionConfig from './config'
-const connection = knex({
+
+export const connection = knex({
   client: 'pg',
   connection: {
     host: connectionConfig.host,
@@ -9,5 +10,3 @@ const connection = knex({
     database: connectionConfig.database
   }
 })
-
-export default connection
