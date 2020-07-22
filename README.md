@@ -5,6 +5,8 @@
 
 ---
 # how use db with docker
+I use the docker in this part of the application because I use two pcs for development and if other people wanted to help me, then I need an automated process to start the database, I will use knexjs to run seeds, migrations, so I decided to use the docker, but I still don't have a deep knowledge of the docker, this is a simple use of the docker 
+
 - after install docker ...
 
 - i use postgre 12.3, 12, latest
