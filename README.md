@@ -17,13 +17,13 @@ I use the docker in this part of the application because I use two pcs for devel
 
 ``` docker pull postgres ```
 
-``` docker run --name postgreDB -e POSTGRES_PASSWORD=admin -d -p 5432:5432 postgres ```
+``` docker run --name postgreDB -e POSTGRES_PASSWORD=admin -e POSTGRES_USER=admin  -d -p 5432:5432 postgres  ```
 
 - Ubuntu
 
 ``` sudo docker pull postgres ```
 
-``` docker run --name postgreDB -e POSTGRES_PASSWORD=admin -d -p 5432:5432 postgres ```
+``` docker run --name postgreDB -e POSTGRES_PASSWORD=admin -e POSTGRES_USER=admin  -d -p 5432:5432 postgres  ```
 
 - use cli postgre
    ``` docker exec -it postgreDB psql -U postgres --password ```
