@@ -3,5 +3,30 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/f7007fd3e90ed4243ae3/maintainability)](https://codeclimate.com/github/idylicaro/api-signUp-signIn-generic/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f7007fd3e90ed4243ae3/test_coverage)](https://codeclimate.com/github/idylicaro/api-signUp-signIn-generic/test_coverage)
 
+---
+# how use db with docker
+- after install docker ...
+
+- i use postgre 12.3, 12, latest
+
+- this script sequence for create db
+
+- Windows
+
+``` docker pull postgres ```
+
+``` docker run --name postgreDB -e POSTGRES_PASSWORD=admin -d -p 5432:5432 postgres ```
+
+- Ubuntu
+
+``` sudo docker pull postgres ```
+
+``` docker run --name postgreDB -e POSTGRES_PASSWORD=admin -d -p 5432:5432 postgres ```
+
+- use cli postgre
+   ``` docker exec -it postgreDB psql -U postgres --password ```
+   
+---
+
 # api-signUp-signIn-generic
 ![Diagram](https://github.com/idylicaro/api-condominium/blob/master/Docs/Diagrams/SignUpDiagram.png)
