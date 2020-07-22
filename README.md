@@ -27,6 +27,7 @@ I use the docker in this part of the application because I use two pcs for devel
 
 - use cli postgre( Query CLI )
    ``` docker exec -it postgreDB psql -U admin --password ```
+- afte entry in cli postgre, create db ``` create database genericSign; ```
    
 ---
 
