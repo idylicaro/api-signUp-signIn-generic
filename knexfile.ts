@@ -1,5 +1,6 @@
-import path from 'path'
+import * as path from 'path'
 import connectionConfig from './src/infra/db-postgresql/config'
+
 module.exports = {
   client: 'pg',
   connection: {
