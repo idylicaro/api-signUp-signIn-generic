@@ -26,7 +26,7 @@ I use the docker in this part of the application because I use two pcs for devel
 ``` docker run --name postgreDB -e POSTGRES_PASSWORD=admin -e POSTGRES_USER=admin  -d -p 5432:5432 postgres  ```
 
 - use cli postgre
-   ``` docker exec -it postgreDB psql -U postgres --password ```
+   ``` docker exec -it postgreDB psql -U admin --password ```
    
 ---
 
