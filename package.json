@@ -9,7 +9,9 @@
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "npm test -- --findRelatedTests",
-    "test:ci": "npm test -- --coverage"
+    "test:ci": "npm test -- --coverage",
+    "knex:migrate": "knex --knexfile knexfile.ts migrate:latest",
+    "knex:seed": "knex --knexfile knexfile.ts seed:run"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",
@@ -43,6 +45,8 @@
   "homepage": "https://github.com/idylicaro/api-signUp-signIn-generic#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "knex": "^0.21.2",
+    "pg": "^8.3.0",
     "validator": "^13.1.1"
   }
 }
