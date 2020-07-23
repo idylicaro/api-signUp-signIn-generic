@@ -7,7 +7,8 @@ module.exports = {
     '!**/protocols/**',
     '!**/test/**',
     '!**/config.ts',
-    '!**/pg-connection.ts'
+    '!**/pg-connection.ts',
+    '!**/migrations/**'
   ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
