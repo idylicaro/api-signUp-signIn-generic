@@ -5,7 +5,10 @@ module.exports = {
     '!<rootDir>/src/main/**',
     '!<rootDir>/src/**/*-protocols.ts',
     '!**/protocols/**',
-    '!**/test/**'
+    '!**/test/**',
+    '!**/config.ts',
+    '!**/pg-connection.ts',
+    '!**/migrations/**'
   ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
