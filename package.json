@@ -52,6 +52,7 @@
   "homepage": "https://github.com/idylicaro/api-signUp-signIn-generic#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "br-phone-validator-lib": "^1.0.1",
     "knex": "^0.21.2",
     "pg": "^8.3.0",
     "validator": "^13.1.1"

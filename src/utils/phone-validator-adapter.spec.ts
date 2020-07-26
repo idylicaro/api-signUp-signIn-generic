@@ -1,7 +1,7 @@
 import { PhoneValidatorAdapter } from './phone-validator-adapter'
-import PhoneBrValidator from './phone-validator/phone-validator'
+import PhoneBrValidator from 'br-phone-validator-lib'
 
-jest.mock('./phone-validator/phone-validator', () => ({
+jest.mock('br-phone-validator-lib', () => ({
   isPhone (): boolean {
     return true
   }
