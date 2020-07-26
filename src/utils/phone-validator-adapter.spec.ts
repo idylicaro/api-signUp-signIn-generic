@@ -11,7 +11,7 @@ const makeSut = (): PhoneValidatorAdapter => {
   return new PhoneValidatorAdapter()
 }
 
-describe('phoneValidator Adapter', () => {
+describe('PhoneValidator Adapter', () => {
   test('Should return false if phonevalidator returns false', () => {
     const sut = makeSut()
     jest.spyOn(PhoneBrValidator, 'isPhone').mockReturnValueOnce(false)
@@ -21,13 +21,14 @@ describe('phoneValidator Adapter', () => {
 
   test('Should return true if phonevalidator returns true', () => {
     const sut = makeSut()
-    const isValid = sut.isValid('valid_phone@mail.com')
+    const isValid = sut.isValid('valid_phone')
     expect(isValid).toBe(true)
   })
-//   test('Should call phonevalidator correct phone', () => {
-//     const sut = makeSut()
-//     const isphoneSpy = jest.spyOn(validator, 'isphone')
-//     sut.isValid('valid_phone@mail.com')
-//     expect(isphoneSpy).toHaveBeenCalledWith('valid_phone@mail.com')
-//   })
+
+  test('Should call phonevalidator correct phone', () => {
+    const sut = makeSut()
+    const isphoneSpy = jest.spyOn(PhoneBrValidator, 'isPhone')
+    sut.isValid('valid_phone')
+    expect(isphoneSpy).toHaveBeenCalledWith('valid_phone')
+  })
 })
