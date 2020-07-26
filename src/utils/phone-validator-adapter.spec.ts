@@ -19,11 +19,11 @@ describe('phoneValidator Adapter', () => {
     expect(isValid).toBe(false)
   })
 
-//   test('Should return true if phonevalidator returns true', () => {
-//     const sut = makeSut()
-//     const isValid = sut.isValid('valid_phone@mail.com')
-//     expect(isValid).toBe(true)
-//   })
+  test('Should return true if phonevalidator returns true', () => {
+    const sut = makeSut()
+    const isValid = sut.isValid('valid_phone@mail.com')
+    expect(isValid).toBe(true)
+  })
 //   test('Should call phonevalidator correct phone', () => {
 //     const sut = makeSut()
 //     const isphoneSpy = jest.spyOn(validator, 'isphone')
