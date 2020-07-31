@@ -5,7 +5,6 @@ import knex from '../knex'
 
 export class AccountPostgreRepository implements AddAccountRepository {
   async add (accountData: AddAccountModel): Promise<AccountModel> {
-    // let id: string
     const [user] = await knex('accounts').insert({
       name: accountData.name,
       phone: accountData.phone,

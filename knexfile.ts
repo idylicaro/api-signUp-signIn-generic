@@ -8,8 +8,8 @@ module.exports = {
       host: 'localhost',
       user: 'test',
       password: 'test',
-      database: 'postgres',
-      port: process.env.PG_PORT
+      database: 'testDb',
+      port: 5432
     },
     migrations: {
       directory: path.resolve(__dirname, 'src', 'infra', 'migrations')

@@ -6,25 +6,26 @@ jest.setTimeout(20000)
 let pgContainer
 let knexTestSetup
 describe('Account Postgres Repository', () => {
-  beforeAll(async () => {
-    pgContainer = await new GenericContainer('postgres')
+  beforeAll(async (done) => {
+    pgContainer = await new GenericContainer('postgres', 'latest')
       .withEnv('POSTGRES_USER', 'test')
       .withEnv('POSTGRES_PASSWORD', 'test')
-      .withEnv('POSTGRES_DB', 'postgres')
+      .withEnv('POSTGRES_DB', 'testDb')
       .withExposedPorts(5432)
       .start()
     process.env.PG_PORT = pgContainer.getMappedPort(5432)
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const knexTestConfig = require('../../../../knexfile').test
-    console.log('KNEXCONFIG', knexTestConfig)
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     knexTestSetup = require('knex')(knexTestConfig)
     await knexTestSetup.migrate.latest()
+    done()
   })
 
-  afterAll(async () => {
+  afterAll(async (done) => {
     await pgContainer.stop()
+    done()
   })
 
   const makeSut = (): AccountPostgreRepository => {
@@ -37,7 +38,7 @@ describe('Account Postgres Repository', () => {
     password: 'any_password'
   })
 
-  test('Should return an account on success', async () => {
+  test('Should return an account on success', async (done) => {
     const sut = makeSut()
     const account = await sut.add(makeFakeAccountData())
 
@@ -46,5 +47,6 @@ describe('Account Postgres Repository', () => {
     expect(account.name).toBe('any_name')
     expect(account.email).toBe('any_email@mail.com')
     expect(account.password).toBe('any_password')
+    done()
   })
 })
