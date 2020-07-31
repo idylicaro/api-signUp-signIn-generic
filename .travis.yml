@@ -1,12 +1,21 @@
 env:
   global:
     CC_TEST_REPORTER_ID=22a2352a9676d828f7d318b915639d055173334762a6ee1bc2cd2b3586296776
+    - PGUSER=admin
+    - PGPORT=5432
 language: node_js
 node_js:
   - 12
 addons:
   chrome: stable
+services:
+  - postgresql
+postgres:
+  adapter: postgresql
+  database: genericSign
+  username: admin
 before_script:
+  - psql -c 'create database genericSign;' -U admin
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build

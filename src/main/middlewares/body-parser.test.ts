@@ -9,6 +9,8 @@ describe('Body Parser Middleware', () => {
     await request(app)
       .post('/test_body_parser')
       .send({ name: 'Idyl' })
-      .expect({ name: 'Idyl' })
+      .then(resolve => {
+        expect(resolve.body).toEqual({ name: 'Idyl' })
+      })
   })
 })
