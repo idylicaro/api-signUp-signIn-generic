@@ -5,6 +5,8 @@ describe('SignUp Routes', () => {
   test('Should return an account on success', async () => {
     await request(app)
       .post('/api/signup')
-      .expect(200)
-  })
+      .then(resolve => {
+        expect(resolve.status).toBe(200)
+      })
+  }, 10000)
 })
