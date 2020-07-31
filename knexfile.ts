@@ -9,7 +9,7 @@ module.exports = {
       user: 'test',
       password: 'test',
       database: 'testDb',
-      port: 5432
+      port: process.env.PG_PORT
     },
     migrations: {
       directory: path.resolve(__dirname, 'src', 'infra', 'migrations')
