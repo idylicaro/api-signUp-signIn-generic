@@ -1,7 +1,7 @@
 import { AddAccountRepository } from '../../../data/protocols/add-account-respository'
 import { AddAccountModel } from '../../../domain/usecases/add-account'
 import { AccountModel } from '../../../domain/models/account'
-import knex from '../pg-connection'
+import knex from '../knex'
 
 export class AccountPostgreRepository implements AddAccountRepository {
   async add (accountData: AddAccountModel): Promise<AccountModel> {
