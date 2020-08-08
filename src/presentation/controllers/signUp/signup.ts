@@ -1,13 +1,10 @@
-import { HttpResponse, HttpRequest, Controller, PhoneValidator, AddAccount, Validation } from './signup-protocols'
-import { InvalidParamError } from '../../erros'
+import { HttpResponse, HttpRequest, Controller, AddAccount, Validation } from './signup-protocols'
 import { ok, serverError, badRequest } from '../../helpers/http-helper'
 
 export class SignUpController implements Controller {
-  private readonly phoneValidator: PhoneValidator
   private readonly addAccount: AddAccount
   private readonly validation: Validation
-  constructor (phoneValidator: PhoneValidator, addAccount: AddAccount, validation: Validation) {
-    this.phoneValidator = phoneValidator
+  constructor (addAccount: AddAccount, validation: Validation) {
     this.addAccount = addAccount
     this.validation = validation
   }
@@ -19,9 +16,6 @@ export class SignUpController implements Controller {
         return badRequest(error)
       }
       const { name, email, phone, password } = httpRequest.body
-      if (!this.phoneValidator.isValid(phone)) {
-        return badRequest(new InvalidParamError('phone'))
-      }
       const account = await this.addAccount.add({
         name,
         phone,

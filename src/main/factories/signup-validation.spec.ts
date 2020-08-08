@@ -5,8 +5,19 @@ import { Validation } from '../../presentation/helpers/validators/validation'
 import { CompareFieldValidation } from '../../presentation/helpers/validators/compare-field-validation'
 import { EmailValidation } from '../../presentation/helpers/validators/email-validation'
 import { EmailValidator } from '../../presentation/protocols/email-validator'
+import { PhoneValidator } from '../../presentation/protocols/phone-validator'
+import { PhoneValidation } from '../../presentation/helpers/validators/phone-validation'
 
 jest.mock('../../presentation/helpers/validators/validation-composite')
+
+const makePhoneValidator = (): PhoneValidator => {
+  class PhoneValidatorStub implements PhoneValidator {
+    isValid (phone: string): boolean {
+      return true
+    }
+  }
+  return new PhoneValidatorStub()
+}
 
 const makeEmailValidator = (): EmailValidator => {
   // factory
@@ -28,6 +39,7 @@ describe('SignUpValidation Factory', () => {
     }
     validations.push(new CompareFieldValidation('password', 'passwordConfirmation'))
     validations.push(new EmailValidation('email', makeEmailValidator()))
+    validations.push(new PhoneValidation('phone', makePhoneValidator()))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
 })

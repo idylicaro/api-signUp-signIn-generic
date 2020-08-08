@@ -1,0 +1,18 @@
+import { Validation } from './validation'
+import { InvalidParamError } from '../../erros'
+import { PhoneValidator } from '../../protocols/phone-validator'
+
+export class PhoneValidation implements Validation {
+  private readonly fieldName: string
+  private readonly phoneValidator: PhoneValidator
+  constructor (fieldName: string, phoneValidator: PhoneValidator) {
+    this.fieldName = fieldName
+    this.phoneValidator = phoneValidator
+  }
+
+  validate (input: any): Error {
+    if (!this.phoneValidator.isValid(input[this.fieldName])) {
+      return new InvalidParamError(this.fieldName)
+    }
+  }
+}

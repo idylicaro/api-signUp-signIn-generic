@@ -1,7 +1,7 @@
 
 import { SignUpController } from './signup'
-import { HttpRequest, PhoneValidator, AddAccount, AccountModel, AddAccountModel, Validation } from './signup-protocols'
-import { ServerError, InvalidParamError, MissingParamError } from '../../erros'
+import { HttpRequest, AddAccount, AccountModel, AddAccountModel, Validation } from './signup-protocols'
+import { ServerError, MissingParamError } from '../../erros'
 import { badRequest } from '../../helpers/http-helper'
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -13,17 +13,6 @@ const makeFakeRequest = (): HttpRequest => ({
     passwordConfirmation: 'any_password'
   }
 })
-
-const makePhoneValidator = (): PhoneValidator => {
-  // factory
-  class PhoneValidatorStub implements PhoneValidator {
-    // mock  type stub
-    isValid (phone: string): boolean {
-      return true
-    }
-  }
-  return new PhoneValidatorStub()
-}
 
 const makeFakeAccount = (): AccountModel => ({
   id: 'valid_id',
@@ -53,59 +42,22 @@ const makeValidation = (): Validation => {
 
 interface SutTypes {
   sut: SignUpController
-  phoneValidatorStub: PhoneValidator
   addAccountStub: AddAccount
   validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
-  const phoneValidatorStub = makePhoneValidator()
   const addAccountStub = makeAddAccount()
   const validationStub = makeValidation()
-  const sut = new SignUpController(phoneValidatorStub, addAccountStub, validationStub)
+  const sut = new SignUpController(addAccountStub, validationStub)
   return {
     sut,
-    phoneValidatorStub,
     addAccountStub,
     validationStub
   }
 }
 
 describe('SignUp Controller', () => {
-  test('Should return 400 if phone is not valid', async () => {
-    const { sut, phoneValidatorStub } = makeSut()
-    jest.spyOn(phoneValidatorStub, 'isValid').mockReturnValueOnce(false)
-    const httpRequest = {
-      body: {
-        name: 'any_name',
-        phone: 'invalid_phonenumber',
-        email: 'any_email@mail.com',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new InvalidParamError('phone'))
-  })
-
-  test('Should call PhoneValidator with correct phone', async () => {
-    const { sut, phoneValidatorStub } = makeSut()
-    const isValidSpy = jest.spyOn(phoneValidatorStub, 'isValid')
-    await sut.handle(makeFakeRequest())
-    expect(isValidSpy).toHaveBeenCalledWith('any_phonenumber')
-  })
-
-  test('Should return 500 if phoneValidator throws', async () => {
-    const { sut, phoneValidatorStub } = makeSut()
-    jest.spyOn(phoneValidatorStub, 'isValid').mockImplementationOnce(() => {
-      throw new Error()
-    })
-    const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(new ServerError(null))
-  })
-
   test('Should call AddAccount with correctly values', async () => {
     const { sut, addAccountStub } = makeSut()
     const addSpy = jest.spyOn(addAccountStub, 'add')
