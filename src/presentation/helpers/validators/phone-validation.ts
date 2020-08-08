@@ -1,5 +1,5 @@
 import { Validation } from './validation'
-import { InvalidParamError } from '../../erros'
+import { InvalidParamError } from '../../errors'
 import { PhoneValidator } from '../../protocols/phone-validator'
 
 export class PhoneValidation implements Validation {
