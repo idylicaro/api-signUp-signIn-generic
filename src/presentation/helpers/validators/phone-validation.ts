@@ -1,4 +1,4 @@
-import { Validation } from './validation'
+import { Validation } from '../../protocols/validation'
 import { InvalidParamError } from '../../errors'
 import { PhoneValidator } from '../../protocols/phone-validator'
 
