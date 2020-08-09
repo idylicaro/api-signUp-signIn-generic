@@ -1,4 +1,4 @@
-import { AddAccountRepository } from '../../../data/protocols/add-account-respository'
+import { AddAccountRepository } from '../../../data/protocols/db/add-account-respository'
 import { AddAccountModel } from '../../../domain/usecases/add-account'
 import { AccountModel } from '../../../domain/models/account'
 import knex from '../knex'
