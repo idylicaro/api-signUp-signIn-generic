@@ -1,14 +1,14 @@
 import { makeSignUpValidation } from './signup-validation'
-import { ValidationComposite } from '../../presentation/helpers/validators/validation-composite'
-import { RequiredFieldValidation } from '../../presentation/helpers/validators/required-field-validation'
-import { Validation } from '../../presentation/helpers/validators/validation'
-import { CompareFieldValidation } from '../../presentation/helpers/validators/compare-field-validation'
-import { EmailValidation } from '../../presentation/helpers/validators/email-validation'
-import { EmailValidator } from '../../presentation/protocols/email-validator'
-import { PhoneValidator } from '../../presentation/protocols/phone-validator'
-import { PhoneValidation } from '../../presentation/helpers/validators/phone-validation'
+import { ValidationComposite } from '../../../presentation/helpers/validators/validation-composite'
+import { RequiredFieldValidation } from '../../../presentation/helpers/validators/required-field-validation'
+import { Validation } from '../../../presentation/helpers/validators/validation'
+import { CompareFieldValidation } from '../../../presentation/helpers/validators/compare-field-validation'
+import { EmailValidation } from '../../../presentation/helpers/validators/email-validation'
+import { EmailValidator } from '../../../presentation/protocols/email-validator'
+import { PhoneValidator } from '../../../presentation/protocols/phone-validator'
+import { PhoneValidation } from '../../../presentation/helpers/validators/phone-validation'
 
-jest.mock('../../presentation/helpers/validators/validation-composite')
+jest.mock('../../../presentation/helpers/validators/validation-composite')
 
 const makePhoneValidator = (): PhoneValidator => {
   class PhoneValidatorStub implements PhoneValidator {
