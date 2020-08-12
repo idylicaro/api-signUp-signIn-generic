@@ -1,5 +1,5 @@
 import { PhoneValidation } from './phone-validation'
-import { PhoneValidator } from '../../controllers/signUp/signup-protocols'
+import { PhoneValidator } from '../../protocols/phone-validator'
 import { InvalidParamError } from '../../errors'
 
 const makePhoneValidator = (): PhoneValidator => {
