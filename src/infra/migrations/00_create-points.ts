@@ -5,9 +5,10 @@ export async function up (knex: Knex): Promise<void> {
   return await knex.schema.createTable('accounts', table => {
     table.increments('id').primary()
     table.string('name').notNullable()
-    table.string('phone').notNullable()
-    table.string('email').notNullable()
+    table.string('phone').notNullable().unique()
+    table.string('email').notNullable().unique()
     table.string('password').notNullable()
+    table.string('accessToken')
   })
 }
 export async function down (knex: Knex): Promise<void> {
