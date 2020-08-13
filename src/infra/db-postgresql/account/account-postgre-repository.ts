@@ -1,4 +1,4 @@
-import { AddAccountRepository } from '../../../data/protocols/db/add-account-respository'
+import { AddAccountRepository } from '../../../data/protocols/db/account/add-account-respository'
 import { AddAccountModel } from '../../../domain/usecases/add-account'
 import { AccountModel } from '../../../domain/models/account'
 import { UpdateAccessTokenRepository, LoadAccountByEmailRepository } from '../../../data/usecases/authentication/db-authentication-protocols'
