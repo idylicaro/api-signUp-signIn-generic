@@ -1,7 +1,7 @@
 import { SignUpController } from '../../../presentation/controllers/signup/signup'
 import { DbAddAccount } from '../../../data/usecases/add-account/db-add-account'
 import { BcryptAdapter } from '../../../infra/criptography/bcrypt-adapter/bcrypt-adapter'
-import { AccountPostgreRepository } from '../../../infra/db-postgresql/account-repository/account'
+import { AccountPostgreRepository } from '../../../infra/db-postgresql/account/account-postgre-repository'
 import { Controller } from '../../../presentation/protocols'
 import { makeSignUpValidation } from './signup-validation'
 
