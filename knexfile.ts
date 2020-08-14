@@ -27,5 +27,15 @@ module.exports = {
     seeds: {
       directory: path.resolve(__dirname, 'src', 'infra', 'seeds')
     }
+  },
+  production: {
+    client: 'pg',
+    connection: process.env.DATABASE_URL,
+    migrations: {
+      directory: path.resolve(__dirname, 'src', 'infra', 'migrations')
+    },
+    seeds: {
+      directory: path.resolve(__dirname, 'src', 'infra', 'seeds')
+    }
   }
 }
