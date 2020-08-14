@@ -1,8 +1,12 @@
 {
-  "name": "api-signUp-signIn-generic",
+  "name": "api-signup-signin-generic",
   "version": "0.2.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "12.16",
+    "npm":"6.14"
+  },
   "scripts": {
     "start": "node dist/src/main/server.js",
     "build": "rimraf dist && tsc",
