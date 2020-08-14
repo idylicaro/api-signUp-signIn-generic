@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/src/main/server.js",
     "build": "rimraf dist && tsc",
-    "dev": "sucrase-node src/main/server.ts",
+    "dev": "cross-env NODE_ENV=development sucrase-node src/main/server.ts",
     "test": "cross-env NODE_ENV=test jest --passWithNoTests --silent --noStackTrace --runInBand --detectOpenHandles",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
