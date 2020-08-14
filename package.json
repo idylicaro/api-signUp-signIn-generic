@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/main/server.js",
+    "start": "node dist/src/main/server.js",
     "build": "rimraf dist && tsc",
     "dev": "sucrase-node src/main/server.ts",
     "test": "cross-env NODE_ENV=test jest --passWithNoTests --silent --noStackTrace --runInBand --detectOpenHandles",
@@ -65,7 +65,6 @@
     "bcrypt": "^5.0.0",
     "br-phone-validator-lib": "^1.0.1",
     "express": "^4.17.1",
-    "fast-glob": "^3.2.4",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.2",
     "pg": "^8.3.0",
