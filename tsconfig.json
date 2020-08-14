@@ -1,13 +1,14 @@
 {
     "compilerOptions": {
         "outDir": "dist",
-        "module": "commonjs",
+        "module": "CommonJS",
         "target": "ES2019",
         "esModuleInterop": true,
-        "allowJs": true
+        "allowJs": true,
+        "moduleResolution": "node"
     },
     "include": [
-      "src",
+      "src/**/*.ts",
       "knexfile.ts"
     ],
     "exclude": [
