@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "12.16",
-    "npm": "6.14"
+    "node": "12.x",
+    "npm": "6.x"
   },
   "scripts": {
     "start": "node dist/src/main/server.js",
