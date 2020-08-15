@@ -12,6 +12,7 @@ export const unauthorized = (): HttpResponse => ({
 
 export const serverError = (error: Error): HttpResponse => ({
   statusCode: 500,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   body: new ServerError(error.stack)
 })
 
