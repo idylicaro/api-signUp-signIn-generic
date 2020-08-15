@@ -10,7 +10,7 @@ export class PhoneValidation implements Validation {
     this.phoneValidator = phoneValidator
   }
 
-  validate (input: any): Error {
+  validate (input: any): Error | undefined {
     if (!this.phoneValidator.isValid(input[this.fieldName])) {
       return new InvalidParamError(this.fieldName)
     }

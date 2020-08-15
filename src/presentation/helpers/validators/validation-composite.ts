@@ -6,7 +6,7 @@ export class ValidationComposite implements Validation {
     this.validations = validations
   }
 
-  validate (input: any): Error {
+  validate (input: any): Error | undefined {
     for (const validation of this.validations) {
       const erro = validation.validate(input)
       if (erro) {

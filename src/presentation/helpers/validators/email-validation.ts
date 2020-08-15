@@ -10,7 +10,7 @@ export class EmailValidation implements Validation {
     this.emailValidator = emailValidator
   }
 
-  validate (input: any): Error {
+  validate (input: any): Error | undefined {
     if (!this.emailValidator.isValid(input[this.fieldName])) {
       return new InvalidParamError(this.fieldName)
     }
