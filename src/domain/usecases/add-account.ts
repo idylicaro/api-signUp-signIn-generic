@@ -1,4 +1,5 @@
-import { AccountModel } from '../models/Account'
+import { AccountModel } from '../models/account'
+
 export interface AddAccountModel {
   name: string
   phone: string
