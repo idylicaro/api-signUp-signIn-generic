@@ -1,25 +1,25 @@
 version: "3"
-services: 
+services:
   postgres:
     container_name: postgre-container
     image: postgres:12.3
     restart: always
     ports:
       - "5432:5432"
-    environment: 
+    environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-    
+
   api:
     container_name: api-container
     image: node:12
     working_dir: /usr/src/api-signup-signin-generic
     restart: always
     command: bash -c "npm i --only=prod && npm start"
-    volumes: 
+    volumes:
       - ./dist:/usr/src/api-signup-signin-generic/dist
       - ./package.json:/usr/src/api-signup-signin-generic/package.json
-    ports: 
+    ports:
       - "5050:5050"
-    links: 
+    links:
       - postgres
