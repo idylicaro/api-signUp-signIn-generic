@@ -18,8 +18,3 @@ script:
   - npm run test:ci
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-deploy:
-  provider: heroku
-  api_key:
-    - secure: $SECURE_KEY
-  app: $APP
