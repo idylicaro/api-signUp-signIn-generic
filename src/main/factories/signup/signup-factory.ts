@@ -4,6 +4,8 @@ import { BcryptAdapter } from '../../../infra/criptography/bcrypt-adapter/bcrypt
 import { AccountPostgreRepository } from '../../../infra/db-postgresql/account/account-postgre-repository'
 import { Controller } from '../../../presentation/protocols'
 import { makeSignUpValidation } from './signup-validation-factory'
+import { LogPostgreRepository } from '../../../infra/db-postgresql/log/log-repository'
+import { LogControllerDecorator } from '../../decorators/log'
 
 export const makeSignUpController = (): Controller => {
   const salt = 12
@@ -11,5 +13,6 @@ export const makeSignUpController = (): Controller => {
   const accountMongoRepository = new AccountPostgreRepository()
   const dbAddAccount = new DbAddAccount(bcryptAdapter, accountMongoRepository)
   const signUpController = new SignUpController(dbAddAccount, makeSignUpValidation())
-  return signUpController
+  const logPostgreRepository = new LogPostgreRepository()
+  return new LogControllerDecorator(signUpController, logPostgreRepository)
 }

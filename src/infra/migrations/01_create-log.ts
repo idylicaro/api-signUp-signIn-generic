@@ -4,7 +4,7 @@ export async function up (knex: Knex): Promise<void> {
   // Criar a tabela
   return await knex.schema.createTable('errors', table => {
     table.increments('id').primary()
-    table.string('stack')
+    table.string('stack', 1000)
     table.string('date')
   })
 }
