@@ -6,6 +6,8 @@ import { AccountPostgreRepository } from '../../../infra/db-postgresql/account/a
 import { BcryptAdapter } from '../../../infra/criptography/bcrypt-adapter/bcrypt-adapter'
 import { JwtAdapter } from '../../../infra/criptography/jwt-adapter/jwt-adapter'
 import { DbAuthentication } from '../../../data/usecases/authentication/db-authentication'
+import { LogPostgreRepository } from '../../../infra/db-postgresql/log/log-repository'
+import { LogControllerDecorator } from '../../decorators/log'
 
 export const makeLoginController = (): Controller => {
   const salt = 12
@@ -14,5 +16,6 @@ export const makeLoginController = (): Controller => {
   const accountPostgreRepository = new AccountPostgreRepository()
   const dbAuthentication = new DbAuthentication(accountPostgreRepository, bcryptAdapter, jwtAdapter, accountPostgreRepository)
   const loginController = new LoginController(dbAuthentication, makeLoginValidation())
-  return loginController
+  const logPostgreRepository = new LogPostgreRepository()
+  return new LogControllerDecorator(loginController, logPostgreRepository)
 }
