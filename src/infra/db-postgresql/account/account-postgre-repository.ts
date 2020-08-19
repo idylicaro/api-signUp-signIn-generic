@@ -2,7 +2,7 @@ import { AddAccountRepository } from '../../../data/protocols/db/account/add-acc
 import { AddAccountModel } from '../../../domain/usecases/add-account'
 import { AccountModel } from '../../../domain/models/account'
 import { UpdateAccessTokenRepository, LoadAccountByEmailRepository } from '../../../data/usecases/authentication/db-authentication-protocols'
-import knex from '../knex'
+import knex from '../../knex/knex-environment'
 
 export class AccountPostgreRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
   async add (accountData: AddAccountModel): Promise<AccountModel> {

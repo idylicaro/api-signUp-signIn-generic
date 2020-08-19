@@ -1,5 +1,4 @@
 import * as path from 'path'
-import connectionConfig from './src/infra/db-postgresql/config'
 
 module.exports = {
   test: {
@@ -20,7 +19,12 @@ module.exports = {
   },
   development: {
     client: 'pg',
-    connection: connectionConfig,
+    connection: {
+      host: 'localhost',
+      user: 'admin',
+      password: 'admin',
+      database: 'genericSign'
+    },
     migrations: {
       directory: path.resolve(__dirname, 'src', 'infra', 'migrations')
     },
