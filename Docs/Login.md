@@ -9,6 +9,7 @@
 5. ✅ Gera um **token** de acesso a partir do ID do usuário
 6. ✅ **Atualiza** os dados do usuário com o token de acesso gerado
 7. ✅ Retorna **200** com o token de acesso e o nome do usuário
+8. ⛔ Recuperação de senha
 
 > ## Exceções
 
