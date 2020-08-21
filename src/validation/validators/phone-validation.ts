@@ -1,6 +1,6 @@
-import { Validation } from '../../protocols/validation'
-import { InvalidParamError } from '../../errors'
-import { PhoneValidator } from '../../protocols/phone-validator'
+import { Validation } from '../../presentation/protocols/validation'
+import { InvalidParamError } from '../../presentation/errors'
+import { PhoneValidator } from '../protocols/phone-validator'
 
 export class PhoneValidation implements Validation {
   private readonly fieldName: string
