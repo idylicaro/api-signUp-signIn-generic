@@ -1,7 +1,17 @@
 import { AccountConfirmationController } from './account-confirmaton-controller'
-import { badRequest } from '../../helpers/http/http-helper'
+import { badRequest, ok } from '../../helpers/http/http-helper'
 import { MissingParamError } from '../../errors/missing-param-error'
 import { AccountVerify } from '../../../domain/usecases/verify-account'
+import { HttpRequest } from '../../protocols/http'
+
+const makeFakeHttpRequest = (): HttpRequest => {
+  return {
+    query: {
+      id: 'valid_id',
+      token: 'valid_token'
+    }
+  }
+}
 
 const makeAccountConfirmation = (): AccountVerify => {
   class AccountConfirmationStub implements AccountVerify {
@@ -49,16 +59,17 @@ describe('Account Confirmation Controller', () => {
     expect(httpResponse).toEqual(badRequest(new MissingParamError('token')))
   })
 
-  test('Should calls AccountConfirmation with correct values', async () => {
+  test('Should calls AccountVerify with correct values', async () => {
     const { sut, accountConfirmationStub } = makeSut()
     const confirm = jest.spyOn(accountConfirmationStub, 'confirm')
-    const httpRequest = {
-      query: {
-        id: 'any_id',
-        token: 'any_token'
-      }
-    }
+    const httpRequest = makeFakeHttpRequest()
     await sut.handle(httpRequest)
     expect(confirm).toHaveBeenCalledWith(httpRequest.query.id, httpRequest.query.token)
+  })
+
+  test('Should return 200 if succeeds', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeHttpRequest())
+    expect(httpResponse).toEqual(ok({ Message: 'Confirmation Accepted' }))
   })
 })
