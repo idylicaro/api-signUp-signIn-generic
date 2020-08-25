@@ -3,6 +3,7 @@ import { badRequest, ok } from '../../helpers/http/http-helper'
 import { MissingParamError } from '../../errors/missing-param-error'
 import { AccountVerify } from '../../../domain/usecases/verify-account'
 import { HttpRequest } from '../../protocols/http'
+import { InvalidError } from '../../errors'
 
 const makeFakeHttpRequest = (): HttpRequest => {
   return {
@@ -65,6 +66,13 @@ describe('Account Confirmation Controller', () => {
     const httpRequest = makeFakeHttpRequest()
     await sut.handle(httpRequest)
     expect(confirm).toHaveBeenCalledWith(httpRequest.query.id, httpRequest.query.token)
+  })
+
+  test('Should return 400 if AccountVerify fails', async () => {
+    const { sut, accountConfirmationStub } = makeSut()
+    jest.spyOn(accountConfirmationStub, 'confirm').mockReturnValueOnce(new Promise(resolve => resolve(false)))
+    const httpResponse = await sut.handle(makeFakeHttpRequest())
+    expect(httpResponse).toEqual(badRequest(new InvalidError()))
   })
 
   test('Should return 200 if succeeds', async () => {
