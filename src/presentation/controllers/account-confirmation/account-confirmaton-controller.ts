@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse } from '../../protocols'
-import { badRequest } from '../../helpers/http/http-helper'
+import { badRequest, ok } from '../../helpers/http/http-helper'
 import { MissingParamError } from '../../errors'
 import { AccountVerify } from '../../../domain/usecases/verify-account'
 
@@ -14,6 +14,6 @@ export class AccountConfirmationController implements Controller {
       return badRequest(new MissingParamError('token'))
     }
     await this.accountConfirmation.confirm(id, token)
-    return await new Promise(resolve => resolve(null))
+    return ok({ Message: 'Confirmation Accepted' })
   }
 }
