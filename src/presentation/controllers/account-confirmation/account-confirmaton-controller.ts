@@ -7,6 +7,9 @@ export class AccountConfirmationController implements Controller {
     if (!httpRequest.query.id) {
       return badRequest(new MissingParamError('id'))
     }
+    if (!httpRequest.query.token) {
+      return badRequest(new MissingParamError('token'))
+    }
     return await new Promise(resolve => resolve(null))
   }
 }
