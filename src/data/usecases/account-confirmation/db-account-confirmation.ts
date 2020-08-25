@@ -1,7 +1,7 @@
-import { AccountConfirmation } from '../../../domain/usecases/account-confirmation'
+import { AccountVerify } from '../../../domain/usecases/verify-account'
 import { LoadAccountByIdRepository } from '../../protocols/db/account/load-account-by-id-repository'
 
-export class DbAccountConfirmation implements AccountConfirmation {
+export class DbAccountConfirmation implements AccountVerify {
   constructor (private readonly loadAccountByIdRepository: LoadAccountByIdRepository) {
   }
 

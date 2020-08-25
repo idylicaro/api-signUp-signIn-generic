@@ -1,10 +1,10 @@
 import { Controller, HttpRequest, HttpResponse } from '../../protocols'
 import { badRequest } from '../../helpers/http/http-helper'
 import { MissingParamError } from '../../errors'
-import { AccountConfirmation } from '../../../domain/usecases/account-confirmation'
+import { AccountVerify } from '../../../domain/usecases/verify-account'
 
 export class AccountConfirmationController implements Controller {
-  constructor (private readonly accountConfirmation: AccountConfirmation) {}
+  constructor (private readonly accountConfirmation: AccountVerify) {}
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const { id, token } = httpRequest.query
     if (!id) {

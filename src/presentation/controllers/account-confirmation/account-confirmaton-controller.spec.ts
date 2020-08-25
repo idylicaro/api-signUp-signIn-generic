@@ -1,10 +1,10 @@
 import { AccountConfirmationController } from './account-confirmaton-controller'
 import { badRequest } from '../../helpers/http/http-helper'
 import { MissingParamError } from '../../errors/missing-param-error'
-import { AccountConfirmation } from '../../../domain/usecases/account-confirmation'
+import { AccountVerify } from '../../../domain/usecases/verify-account'
 
-const makeAccountConfirmation = (): AccountConfirmation => {
-  class AccountConfirmationStub implements AccountConfirmation {
+const makeAccountConfirmation = (): AccountVerify => {
+  class AccountConfirmationStub implements AccountVerify {
     async confirm (id: string, token: string): Promise<Boolean> {
       return await new Promise(resolve => resolve(true))
     }
@@ -14,7 +14,7 @@ const makeAccountConfirmation = (): AccountConfirmation => {
 
 interface SutTypes {
   sut: AccountConfirmationController
-  accountConfirmationStub: AccountConfirmation
+  accountConfirmationStub: AccountVerify
 }
 
 const makeSut = (): SutTypes => {
