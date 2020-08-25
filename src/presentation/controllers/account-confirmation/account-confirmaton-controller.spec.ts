@@ -23,4 +23,15 @@ describe('Account Confirmation Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(badRequest(new MissingParamError('id')))
   })
+
+  test('Should return 400 with MissingParamError if the token are not passed', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      query: {
+        id: 'any_id'
+      }
+    }
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('token')))
+  })
 })
