@@ -1,6 +1,8 @@
 import { DbAccountConfirmation } from './db-account-confirmation'
 import { LoadAccountByIdRepository } from '../../protocols/db/account/load-account-by-id-repository'
 import { AccountModel } from '../../../domain/models/account'
+import { LoadAccountConfirmationByIdRepository } from '../../protocols/db/account-confirmation/load-account_confirmations-by-id_user-repository'
+import { AccountConfirmationModel } from '../../../domain/models/account-confirmation-model'
 
 const makeFakeAccount = (): AccountModel => ({
   id: 'valid_id',
@@ -11,7 +13,14 @@ const makeFakeAccount = (): AccountModel => ({
   isConfirmed: false
 })
 
-const makeLoadAccountByEmailRepository = (): LoadAccountByIdRepository => {
+const makeFakeAccountConfirmation = (): AccountConfirmationModel => ({
+  id: 'valid_id',
+  id_user: 'valid_id_user',
+  token: 'valid_token',
+  date_expire: new Date().toString()
+})
+
+const makeLoadAccountByIdRepository = (): LoadAccountByIdRepository => {
   class LoadAccountByIdRepositoryStub implements LoadAccountByIdRepository {
     async loadById (id: string): Promise<AccountModel> {
       return await new Promise(resolve => resolve(makeFakeAccount()))
@@ -20,17 +29,29 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByIdRepository => {
   return new LoadAccountByIdRepositoryStub()
 }
 
+const makeLoadAccountConfirmationByIdRepository = (): LoadAccountConfirmationByIdRepository => {
+  class LoadAccountConfirmationByIdRepositoryStub implements LoadAccountConfirmationByIdRepository {
+    async loadById (id: string): Promise<AccountConfirmationModel> {
+      return await new Promise(resolve => resolve(makeFakeAccountConfirmation()))
+    }
+  }
+  return new LoadAccountConfirmationByIdRepositoryStub()
+}
+
 interface SutTypes {
   sut: DbAccountConfirmation
   loadAccountByIdRepositoryStub: LoadAccountByIdRepository
+  loadAccountConfirmationByIdRepositoryStub: LoadAccountConfirmationByIdRepository
 }
 
 const makeSut = (): SutTypes => {
-  const loadAccountByIdRepositoryStub = makeLoadAccountByEmailRepository()
-  const sut = new DbAccountConfirmation(loadAccountByIdRepositoryStub)
+  const loadAccountByIdRepositoryStub = makeLoadAccountByIdRepository()
+  const loadAccountConfirmationByIdRepositoryStub = makeLoadAccountConfirmationByIdRepository()
+  const sut = new DbAccountConfirmation(loadAccountByIdRepositoryStub, loadAccountConfirmationByIdRepositoryStub)
   return {
     sut,
-    loadAccountByIdRepositoryStub
+    loadAccountByIdRepositoryStub,
+    loadAccountConfirmationByIdRepositoryStub
   }
 }
 
@@ -63,5 +84,12 @@ describe('DbAccountConfirmation', () => {
     })
     const confirmation = await sut.confirm('any_id', 'any_token')
     expect(confirmation).toBe(false)
+  })
+
+  test('Should calls LoadAccountConfirmationByIdRepository with correct value ', async () => {
+    const { sut, loadAccountConfirmationByIdRepositoryStub } = makeSut()
+    const spyLoadById = jest.spyOn(loadAccountConfirmationByIdRepositoryStub, 'loadById')
+    await sut.confirm('any_id', 'any_token')
+    expect(spyLoadById).toHaveBeenCalledWith('any_id')
   })
 })
