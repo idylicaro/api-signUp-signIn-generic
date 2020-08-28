@@ -7,7 +7,8 @@ const makeFakeAccount = (): AccountModel => ({
   phone: 'valid_phone',
   name: 'valid_name',
   email: 'valid_email',
-  password: 'hashed_password'
+  password: 'hashed_password',
+  isConfirmed: false
 })
 
 const makeLoadAccountByEmailRepository = (): LoadAccountByIdRepository => {
@@ -38,6 +39,22 @@ describe('DbAccountConfirmation', () => {
     const { sut, loadAccountByIdRepositoryStub } = makeSut()
     jest.spyOn(loadAccountByIdRepositoryStub, 'loadById').mockReturnValueOnce(null)
     const confirmation = await sut.confirm('invalid_id', 'any_token')
+    expect(confirmation).toBe(false)
+  })
+
+  test('Should return false if Account is has confirmed', async () => {
+    const { sut, loadAccountByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountByIdRepositoryStub, 'loadById').mockImplementationOnce(async () => {
+      return {
+        id: 'any_id',
+        name: 'any_name',
+        phone: 'any_phone',
+        email: 'any_email',
+        password: 'any_password',
+        isConfirmed: true
+      }
+    })
+    const confirmation = await sut.confirm('any_id', 'any_token')
     expect(confirmation).toBe(false)
   })
 })
