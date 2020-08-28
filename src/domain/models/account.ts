@@ -4,4 +4,5 @@ export type AccountModel = {
   phone: string
   email: string
   password: string
+  isConfirmed?: boolean
 }

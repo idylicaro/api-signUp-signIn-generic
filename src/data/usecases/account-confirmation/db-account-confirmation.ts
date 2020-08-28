@@ -10,6 +10,9 @@ export class DbAccountConfirmation implements AccountVerify {
     if (!account) {
       return false
     }
+    if (account.isConfirmed) {
+      return false
+    }
     return true
   }
 }
