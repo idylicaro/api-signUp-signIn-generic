@@ -35,6 +35,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbAccountConfirmation', () => {
+  test('Should calls LoadAccountByIdRepository with correct value ', async () => {
+    const { sut, loadAccountByIdRepositoryStub } = makeSut()
+    const spyLoadById = jest.spyOn(loadAccountByIdRepositoryStub, 'loadById')
+    await sut.confirm('any_id', 'any_token')
+    expect(spyLoadById).toHaveBeenCalledWith('any_id')
+  })
+
   test('Should return false if LoadAccountByIdRepository return null ', async () => {
     const { sut, loadAccountByIdRepositoryStub } = makeSut()
     jest.spyOn(loadAccountByIdRepositoryStub, 'loadById').mockReturnValueOnce(null)
