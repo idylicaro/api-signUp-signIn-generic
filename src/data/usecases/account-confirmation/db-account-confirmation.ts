@@ -16,7 +16,10 @@ export class DbAccountConfirmation implements AccountVerify {
     if (account.isConfirmed) {
       return false
     }
-    await this.loadAccountConfirmationByIdRepository.loadById(id)
+    const accountConfirmation = await this.loadAccountConfirmationByIdRepository.loadById(id)
+    if (!accountConfirmation) {
+      return false
+    }
     return true
   }
 }
