@@ -1,7 +1,6 @@
 import { DbAccountConfirmation } from './db-account-confirmation'
-import { LoadAccountByIdRepository } from '../../protocols/db/account/load-account-by-id-repository'
+import { LoadAccountConfirmationByIdRepository, LoadAccountByIdRepository } from './db-account-confirmation-protocols'
 import { AccountModel } from '../../../domain/models/account'
-import { LoadAccountConfirmationByIdRepository } from '../../protocols/db/account-confirmation/load-account_confirmations-by-id_user-repository'
 import { AccountConfirmationModel } from '../../../domain/models/account-confirmation-model'
 
 const makeFakeAccount = (): AccountModel => ({
