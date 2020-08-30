@@ -1,5 +1,5 @@
 import { DbAccountConfirmation } from './db-account-confirmation'
-import { LoadAccountConfirmationByIdRepository, LoadAccountByIdRepository } from './db-account-confirmation-protocols'
+import { LoadAccountConfirmationByUserIdRepository, LoadAccountByIdRepository } from './db-account-confirmation-protocols'
 import { AccountModel } from '../../../domain/models/account'
 import { AccountConfirmationModel } from '../../../domain/models/account-confirmation-model'
 
@@ -28,29 +28,29 @@ const makeLoadAccountByIdRepository = (): LoadAccountByIdRepository => {
   return new LoadAccountByIdRepositoryStub()
 }
 
-const makeLoadAccountConfirmationByIdRepository = (): LoadAccountConfirmationByIdRepository => {
-  class LoadAccountConfirmationByIdRepositoryStub implements LoadAccountConfirmationByIdRepository {
+const makeLoadAccountConfirmationByIdRepository = (): LoadAccountConfirmationByUserIdRepository => {
+  class LoadAccountConfirmationByUserIdRepositoryStub implements LoadAccountConfirmationByUserIdRepository {
     async loadById (id: string): Promise<AccountConfirmationModel> {
       return await new Promise(resolve => resolve(makeFakeAccountConfirmation()))
     }
   }
-  return new LoadAccountConfirmationByIdRepositoryStub()
+  return new LoadAccountConfirmationByUserIdRepositoryStub()
 }
 
 interface SutTypes {
   sut: DbAccountConfirmation
   loadAccountByIdRepositoryStub: LoadAccountByIdRepository
-  loadAccountConfirmationByIdRepositoryStub: LoadAccountConfirmationByIdRepository
+  loadAccountConfirmationByUserIdRepositoryStub: LoadAccountConfirmationByUserIdRepository
 }
 
 const makeSut = (): SutTypes => {
   const loadAccountByIdRepositoryStub = makeLoadAccountByIdRepository()
-  const loadAccountConfirmationByIdRepositoryStub = makeLoadAccountConfirmationByIdRepository()
-  const sut = new DbAccountConfirmation(loadAccountByIdRepositoryStub, loadAccountConfirmationByIdRepositoryStub)
+  const loadAccountConfirmationByUserIdRepositoryStub = makeLoadAccountConfirmationByIdRepository()
+  const sut = new DbAccountConfirmation(loadAccountByIdRepositoryStub, loadAccountConfirmationByUserIdRepositoryStub)
   return {
     sut,
     loadAccountByIdRepositoryStub,
-    loadAccountConfirmationByIdRepositoryStub
+    loadAccountConfirmationByUserIdRepositoryStub
   }
 }
 
@@ -85,24 +85,24 @@ describe('DbAccountConfirmation', () => {
     expect(confirmation).toBe(false)
   })
 
-  test('Should calls LoadAccountConfirmationByIdRepository with correct value ', async () => {
-    const { sut, loadAccountConfirmationByIdRepositoryStub } = makeSut()
-    const spyLoadById = jest.spyOn(loadAccountConfirmationByIdRepositoryStub, 'loadById')
+  test('Should calls LoadAccountConfirmationByUserIdRepository with correct value ', async () => {
+    const { sut, loadAccountConfirmationByUserIdRepositoryStub } = makeSut()
+    const spyLoadById = jest.spyOn(loadAccountConfirmationByUserIdRepositoryStub, 'loadById')
     await sut.confirm('any_id', 'any_token')
     expect(spyLoadById).toHaveBeenCalledWith('any_id')
   })
 
-  test('Should return false if LoadAccountConfirmationByIdRepository return null ', async () => {
-    const { sut, loadAccountConfirmationByIdRepositoryStub } = makeSut()
-    jest.spyOn(loadAccountConfirmationByIdRepositoryStub, 'loadById').mockReturnValueOnce(null)
+  test('Should return false if LoadAccountConfirmationByUserIdRepository return null ', async () => {
+    const { sut, loadAccountConfirmationByUserIdRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountConfirmationByUserIdRepositoryStub, 'loadById').mockReturnValueOnce(null)
     const confirmation = await sut.confirm('invalid_id', 'any_token')
     expect(confirmation).toBe(false)
   })
 
   test('Should return false if AccountConfirmation has expired ', async () => {
     const date = new Date()
-    const { sut, loadAccountConfirmationByIdRepositoryStub } = makeSut()
-    jest.spyOn(loadAccountConfirmationByIdRepositoryStub, 'loadById').mockImplementationOnce(async () => {
+    const { sut, loadAccountConfirmationByUserIdRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountConfirmationByUserIdRepositoryStub, 'loadById').mockImplementationOnce(async () => {
       return {
         id: 'any_id',
         id_user: 'any_id_user',

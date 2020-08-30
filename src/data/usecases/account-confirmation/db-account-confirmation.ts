@@ -1,8 +1,8 @@
-import { AccountVerify, LoadAccountConfirmationByIdRepository, LoadAccountByIdRepository } from './db-account-confirmation-protocols'
+import { AccountVerify, LoadAccountConfirmationByUserIdRepository, LoadAccountByIdRepository } from './db-account-confirmation-protocols'
 export class DbAccountConfirmation implements AccountVerify {
   constructor (
     private readonly loadAccountByIdRepository: LoadAccountByIdRepository,
-    private readonly loadAccountConfirmationByIdRepository: LoadAccountConfirmationByIdRepository) {
+    private readonly loadAccountConfirmationByUserIdRepository: LoadAccountConfirmationByUserIdRepository) {
   }
 
   async confirm (id: string, token: string): Promise<Boolean> {
@@ -13,7 +13,7 @@ export class DbAccountConfirmation implements AccountVerify {
     if (account.isConfirmed) {
       return false
     }
-    const accountConfirmation = await this.loadAccountConfirmationByIdRepository.loadById(id)
+    const accountConfirmation = await this.loadAccountConfirmationByUserIdRepository.loadById(id)
     if (!accountConfirmation) {
       return false
     }
