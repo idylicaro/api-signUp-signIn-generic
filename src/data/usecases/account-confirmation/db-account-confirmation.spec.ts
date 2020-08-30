@@ -98,4 +98,19 @@ describe('DbAccountConfirmation', () => {
     const confirmation = await sut.confirm('invalid_id', 'any_token')
     expect(confirmation).toBe(false)
   })
+
+  test('Should return false if AccountConfirmation has expired ', async () => {
+    const date = new Date()
+    const { sut, loadAccountConfirmationByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountConfirmationByIdRepositoryStub, 'loadById').mockImplementationOnce(async () => {
+      return {
+        id: 'any_id',
+        id_user: 'any_id_user',
+        token: 'any_token',
+        date_expire: `${date.getDate() - 1}-${(date.getMonth() + 1)}-${date.getFullYear()}`
+      }
+    })
+    const confirmation = await sut.confirm('any_id_user', 'any_token')
+    expect(confirmation).toBe(false)
+  })
 })
