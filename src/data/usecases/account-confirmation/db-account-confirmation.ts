@@ -1,8 +1,10 @@
-import { AccountVerify, LoadAccountConfirmationByUserIdRepository, LoadAccountByIdRepository } from './db-account-confirmation-protocols'
+import { AccountVerify, LoadAccountConfirmationByUserIdRepository, LoadAccountByIdRepository, ConfirmAccountByIdRepository } from './db-account-confirmation-protocols'
+
 export class DbAccountConfirmation implements AccountVerify {
   constructor (
     private readonly loadAccountByIdRepository: LoadAccountByIdRepository,
-    private readonly loadAccountConfirmationByUserIdRepository: LoadAccountConfirmationByUserIdRepository) {
+    private readonly loadAccountConfirmationByUserIdRepository: LoadAccountConfirmationByUserIdRepository,
+    private readonly confirmAccountByIdRepository: ConfirmAccountByIdRepository) {
   }
 
   async confirm (id: string, token: string): Promise<Boolean> {
@@ -22,11 +24,14 @@ export class DbAccountConfirmation implements AccountVerify {
     const dateExpire = strDateExpire.map(item => parseInt(item))
     const currentDate = new Date()
 
-    if (!(dateExpire[0] >= currentDate.getDate() &&
-        dateExpire[1] >= (currentDate.getMonth() + 1) &&
-        dateExpire[3] >= currentDate.getFullYear())) {
+    if (!(!(dateExpire[0] < currentDate.getDate()) &&
+        !(dateExpire[1] < (currentDate.getMonth() + 1)) &&
+        !(dateExpire[2] < currentDate.getFullYear())
+    )) {
       return false
     }
+
+    await this.confirmAccountByIdRepository.confirmAccount(id)
     return true
   }
 }

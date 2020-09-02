@@ -1,5 +1,5 @@
 import { DbAccountConfirmation } from './db-account-confirmation'
-import { LoadAccountConfirmationByUserIdRepository, LoadAccountByIdRepository } from './db-account-confirmation-protocols'
+import { LoadAccountConfirmationByUserIdRepository, LoadAccountByIdRepository, ConfirmAccountByIdRepository } from './db-account-confirmation-protocols'
 import { AccountModel } from '../../../domain/models/account'
 import { AccountConfirmationModel } from '../../../domain/models/account-confirmation-model'
 
@@ -12,12 +12,15 @@ const makeFakeAccount = (): AccountModel => ({
   isConfirmed: false
 })
 
-const makeFakeAccountConfirmation = (): AccountConfirmationModel => ({
-  id: 'valid_id',
-  id_user: 'valid_id_user',
-  token: 'valid_token',
-  date_expire: new Date().toString()
-})
+const makeFakeAccountConfirmation = (): AccountConfirmationModel => {
+  const date = new Date()
+  return ({
+    id: 'valid_id',
+    id_user: 'valid_id_user',
+    token: 'valid_token',
+    date_expire: `${date.getDate()}-${(date.getMonth() + 1)}-${(date.getFullYear() + 1)}`
+  })
+}
 
 const makeLoadAccountByIdRepository = (): LoadAccountByIdRepository => {
   class LoadAccountByIdRepositoryStub implements LoadAccountByIdRepository {
@@ -37,20 +40,32 @@ const makeLoadAccountConfirmationByIdRepository = (): LoadAccountConfirmationByU
   return new LoadAccountConfirmationByUserIdRepositoryStub()
 }
 
+const makeConfirmAccountByIdRepository = (): ConfirmAccountByIdRepository => {
+  class ConfirmAccountByIdRepositoryStub implements ConfirmAccountByIdRepository {
+    async confirmAccount (id: string): Promise<void> {
+      return await new Promise(resolve => resolve())
+    }
+  }
+  return new ConfirmAccountByIdRepositoryStub()
+}
+
 interface SutTypes {
   sut: DbAccountConfirmation
   loadAccountByIdRepositoryStub: LoadAccountByIdRepository
   loadAccountConfirmationByUserIdRepositoryStub: LoadAccountConfirmationByUserIdRepository
+  confirmAccountByIdRepositoryStub: ConfirmAccountByIdRepository
 }
 
 const makeSut = (): SutTypes => {
   const loadAccountByIdRepositoryStub = makeLoadAccountByIdRepository()
   const loadAccountConfirmationByUserIdRepositoryStub = makeLoadAccountConfirmationByIdRepository()
-  const sut = new DbAccountConfirmation(loadAccountByIdRepositoryStub, loadAccountConfirmationByUserIdRepositoryStub)
+  const confirmAccountByIdRepositoryStub = makeConfirmAccountByIdRepository()
+  const sut = new DbAccountConfirmation(loadAccountByIdRepositoryStub, loadAccountConfirmationByUserIdRepositoryStub, confirmAccountByIdRepositoryStub)
   return {
     sut,
     loadAccountByIdRepositoryStub,
-    loadAccountConfirmationByUserIdRepositoryStub
+    loadAccountConfirmationByUserIdRepositoryStub,
+    confirmAccountByIdRepositoryStub
   }
 }
 
@@ -107,10 +122,17 @@ describe('DbAccountConfirmation', () => {
         id: 'any_id',
         id_user: 'any_id_user',
         token: 'any_token',
-        date_expire: `${date.getDate() - 1}-${(date.getMonth() + 1)}-${date.getFullYear()}`
+        date_expire: `${date.getDate()}-${(date.getMonth())}-${date.getFullYear()}`
       }
     })
     const confirmation = await sut.confirm('any_id_user', 'any_token')
     expect(confirmation).toBe(false)
+  })
+
+  test('Should calls ConfirmAccountByIdRepository with correct value ', async () => {
+    const { sut, confirmAccountByIdRepositoryStub } = makeSut()
+    const spyConfirmAccount = jest.spyOn(confirmAccountByIdRepositoryStub, 'confirmAccount')
+    await sut.confirm('any_id', 'any_token')
+    expect(spyConfirmAccount).toHaveBeenCalledWith('any_id')
   })
 })
