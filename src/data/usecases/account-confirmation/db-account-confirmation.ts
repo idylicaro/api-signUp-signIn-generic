@@ -1,10 +1,11 @@
-import { AccountVerify, LoadAccountConfirmationByUserIdRepository, LoadAccountByIdRepository, ConfirmAccountByIdRepository } from './db-account-confirmation-protocols'
+import { AccountVerify, LoadAccountConfirmationByUserIdRepository, LoadAccountByIdRepository, ConfirmAccountByIdRepository, DeleteAccountConfirmationByUserIdRepository } from './db-account-confirmation-protocols'
 
 export class DbAccountConfirmation implements AccountVerify {
   constructor (
     private readonly loadAccountByIdRepository: LoadAccountByIdRepository,
     private readonly loadAccountConfirmationByUserIdRepository: LoadAccountConfirmationByUserIdRepository,
-    private readonly confirmAccountByIdRepository: ConfirmAccountByIdRepository) {
+    private readonly confirmAccountByIdRepository: ConfirmAccountByIdRepository,
+    private readonly deleteAccountConfirmationByUserIdRepository: DeleteAccountConfirmationByUserIdRepository) {
   }
 
   async confirm (id: string, token: string): Promise<Boolean> {
@@ -32,6 +33,7 @@ export class DbAccountConfirmation implements AccountVerify {
     }
 
     await this.confirmAccountByIdRepository.confirmAccount(id)
+    await this.deleteAccountConfirmationByUserIdRepository.deleteById(id)
     return true
   }
 }
