@@ -1,5 +1,5 @@
 import { DbAccountConfirmation } from './db-account-confirmation'
-import { LoadAccountConfirmationByUserIdRepository, LoadAccountByIdRepository, ConfirmAccountByIdRepository } from './db-account-confirmation-protocols'
+import { LoadAccountConfirmationByUserIdRepository, LoadAccountByIdRepository, ConfirmAccountByIdRepository, DeleteAccountConfirmationByUserIdRepository } from './db-account-confirmation-protocols'
 import { AccountModel } from '../../../domain/models/account'
 import { AccountConfirmationModel } from '../../../domain/models/account-confirmation-model'
 
@@ -40,6 +40,15 @@ const makeLoadAccountConfirmationByIdRepository = (): LoadAccountConfirmationByU
   return new LoadAccountConfirmationByUserIdRepositoryStub()
 }
 
+const makeDeleteAccountConfirmationByIdRepository = (): DeleteAccountConfirmationByUserIdRepository => {
+  class DeleteAccountConfirmationByUserIdRepositoryStub implements DeleteAccountConfirmationByUserIdRepository {
+    async deleteById (id: string): Promise<void> {
+      return await new Promise(resolve => resolve())
+    }
+  }
+  return new DeleteAccountConfirmationByUserIdRepositoryStub()
+}
+
 const makeConfirmAccountByIdRepository = (): ConfirmAccountByIdRepository => {
   class ConfirmAccountByIdRepositoryStub implements ConfirmAccountByIdRepository {
     async confirmAccount (id: string): Promise<void> {
@@ -54,18 +63,21 @@ interface SutTypes {
   loadAccountByIdRepositoryStub: LoadAccountByIdRepository
   loadAccountConfirmationByUserIdRepositoryStub: LoadAccountConfirmationByUserIdRepository
   confirmAccountByIdRepositoryStub: ConfirmAccountByIdRepository
+  deleteAccountConfirmationByUserIdRepositoryStub: DeleteAccountConfirmationByUserIdRepository
 }
 
 const makeSut = (): SutTypes => {
   const loadAccountByIdRepositoryStub = makeLoadAccountByIdRepository()
   const loadAccountConfirmationByUserIdRepositoryStub = makeLoadAccountConfirmationByIdRepository()
   const confirmAccountByIdRepositoryStub = makeConfirmAccountByIdRepository()
-  const sut = new DbAccountConfirmation(loadAccountByIdRepositoryStub, loadAccountConfirmationByUserIdRepositoryStub, confirmAccountByIdRepositoryStub)
+  const deleteAccountConfirmationByUserIdRepositoryStub = makeDeleteAccountConfirmationByIdRepository()
+  const sut = new DbAccountConfirmation(loadAccountByIdRepositoryStub, loadAccountConfirmationByUserIdRepositoryStub, confirmAccountByIdRepositoryStub, deleteAccountConfirmationByUserIdRepositoryStub)
   return {
     sut,
     loadAccountByIdRepositoryStub,
     loadAccountConfirmationByUserIdRepositoryStub,
-    confirmAccountByIdRepositoryStub
+    confirmAccountByIdRepositoryStub,
+    deleteAccountConfirmationByUserIdRepositoryStub
   }
 }
 
@@ -134,5 +146,12 @@ describe('DbAccountConfirmation', () => {
     const spyConfirmAccount = jest.spyOn(confirmAccountByIdRepositoryStub, 'confirmAccount')
     await sut.confirm('any_id', 'any_token')
     expect(spyConfirmAccount).toHaveBeenCalledWith('any_id')
+  })
+
+  test('Should calls DeleteAccountConfirmationByUserIdRepository with correct value ', async () => {
+    const { sut, deleteAccountConfirmationByUserIdRepositoryStub } = makeSut()
+    const spyDeleteById = jest.spyOn(deleteAccountConfirmationByUserIdRepositoryStub, 'deleteById')
+    await sut.confirm('any_id', 'any_token')
+    expect(spyDeleteById).toHaveBeenCalledWith('any_id')
   })
 })
