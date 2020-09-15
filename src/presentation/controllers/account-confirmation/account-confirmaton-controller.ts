@@ -7,14 +7,11 @@ export class AccountConfirmationController implements Controller {
   constructor (private readonly accountConfirmation: AccountVerify) {}
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { id, token } = httpRequest.query
+      const { id } = httpRequest.query
       if (!id) {
         return badRequest(new MissingParamError('id'))
       }
-      if (!token) {
-        return badRequest(new MissingParamError('token'))
-      }
-      const isConfirmated = await this.accountConfirmation.confirm(id, token)
+      const isConfirmated = await this.accountConfirmation.confirm(id)
       if (!isConfirmated) {
         return badRequest(new InvalidError())
       }

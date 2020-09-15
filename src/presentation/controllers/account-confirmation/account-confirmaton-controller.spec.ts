@@ -8,15 +8,14 @@ import { InvalidError, ServerError } from '../../errors'
 const makeFakeHttpRequest = (): HttpRequest => {
   return {
     query: {
-      id: 'valid_id',
-      token: 'valid_token'
+      id: 'valid_id'
     }
   }
 }
 
 const makeAccountConfirmation = (): AccountVerify => {
   class AccountConfirmationStub implements AccountVerify {
-    async confirm (id: string, token: string): Promise<Boolean> {
+    async confirm (id: string): Promise<Boolean> {
       return await new Promise(resolve => resolve(true))
     }
   }
@@ -42,22 +41,10 @@ describe('Account Confirmation Controller', () => {
     const { sut } = makeSut()
     const httpRequest = {
       query: {
-        token: 'any_token'
       }
     }
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(badRequest(new MissingParamError('id')))
-  })
-
-  test('Should return 400 with MissingParamError if the token are not passed', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      query: {
-        id: 'any_id'
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(badRequest(new MissingParamError('token')))
   })
 
   test('Should calls AccountVerify with correct values', async () => {
@@ -65,7 +52,7 @@ describe('Account Confirmation Controller', () => {
     const confirm = jest.spyOn(accountConfirmationStub, 'confirm')
     const httpRequest = makeFakeHttpRequest()
     await sut.handle(httpRequest)
-    expect(confirm).toHaveBeenCalledWith(httpRequest.query.id, httpRequest.query.token)
+    expect(confirm).toHaveBeenCalledWith(httpRequest.query.id)
   })
 
   test('Should return 400 if AccountVerify fails', async () => {
