@@ -12,7 +12,7 @@ export class DbAccountConfirmation implements AccountVerify {
       return false
     }
     if (account.isConfirmed) {
-      return false
+      return true
     }
     await this.confirmAccountByIdRepository.confirmAccount(id)
     return true
