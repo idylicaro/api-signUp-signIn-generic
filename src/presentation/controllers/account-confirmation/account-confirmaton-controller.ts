@@ -1,8 +1,6 @@
-import { Controller, HttpRequest, HttpResponse } from '../../protocols'
+import { Controller, HttpRequest, HttpResponse, AccountVerify, Validation } from './account-confirmaton-controller-protocols'
 import { badRequest, ok, serverError } from '../../helpers/http/http-helper'
 import { InvalidError } from '../../errors'
-import { AccountVerify } from '../../../domain/usecases/verify-account'
-import { Validation } from '../../protocols/validation'
 
 export class AccountConfirmationController implements Controller {
   constructor (
