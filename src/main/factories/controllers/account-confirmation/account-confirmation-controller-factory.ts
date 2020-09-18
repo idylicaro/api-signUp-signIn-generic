@@ -4,7 +4,7 @@ import { makeAccountConfirmationValidation } from './account-confirmation-valida
 import { makeDbAccountVerify } from '../../usecases/account-confirmation/db-account-verify-factory'
 import { makeLogControllerDecorator } from '../../decorators/log-controller-decorator-factory'
 
-export const makeLoginController = (): Controller => {
+export const makeAccountConfirmationController = (): Controller => {
   const accountConfirmationController = new AccountConfirmationController(makeDbAccountVerify(), makeAccountConfirmationValidation())
   return makeLogControllerDecorator(accountConfirmationController)
 }
