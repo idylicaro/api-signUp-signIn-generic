@@ -4,6 +4,7 @@ import { MissingParamError } from '../../errors/missing-param-error'
 import { AccountVerify } from '../../../domain/usecases/verify-account'
 import { HttpRequest } from '../../protocols/http'
 import { InvalidError, ServerError } from '../../errors'
+import { Validation } from '../../protocols/validation'
 
 const makeFakeHttpRequest = (): HttpRequest => {
   return {
@@ -22,17 +23,29 @@ const makeAccountConfirmation = (): AccountVerify => {
   return new AccountConfirmationStub()
 }
 
+const makeValidation = (): Validation => {
+  class ValidationStub implements Validation {
+    validate (input: any): Error {
+      return null
+    }
+  }
+  return new ValidationStub()
+}
+
 interface SutTypes {
   sut: AccountConfirmationController
   accountConfirmationStub: AccountVerify
+  validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const accountConfirmationStub = makeAccountConfirmation()
-  const sut = new AccountConfirmationController(accountConfirmationStub)
+  const validationStub = makeValidation()
+  const sut = new AccountConfirmationController(accountConfirmationStub, validationStub)
   return {
     sut,
-    accountConfirmationStub
+    accountConfirmationStub,
+    validationStub
   }
 }
 
@@ -76,5 +89,13 @@ describe('Account Confirmation Controller', () => {
     const httpResponse = await sut.handle(makeFakeHttpRequest())
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError(null))
+  })
+
+  test('Should call Validation with correct value', async () => {
+    const { sut, validationStub } = makeSut()
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+    const httpRequest = makeFakeHttpRequest()
+    await sut.handle(httpRequest)
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.query)
   })
 })
