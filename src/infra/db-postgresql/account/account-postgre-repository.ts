@@ -31,6 +31,6 @@ export class AccountPostgreRepository implements AddAccountRepository, LoadAccou
   }
 
   async confirmAccount (id: string): Promise<void> {
-    await knex('accounts').where({ id: id }).update({ isConfirmed: true })
+    await knex('accounts').where({ id: id }).update({ is_confirmed: true })
   }
 }
