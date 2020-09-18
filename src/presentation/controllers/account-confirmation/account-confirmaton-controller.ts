@@ -11,7 +11,10 @@ export class AccountConfirmationController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      this.validation.validate(httpRequest.query)
+      const error = this.validation.validate(httpRequest.query)
+      if (error) {
+        return badRequest(error)
+      }
       const { id } = httpRequest.query
       if (!id) {
         return badRequest(new MissingParamError('id'))
