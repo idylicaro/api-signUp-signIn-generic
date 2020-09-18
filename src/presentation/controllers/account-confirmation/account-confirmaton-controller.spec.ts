@@ -50,16 +50,6 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Account Confirmation Controller', () => {
-  test('Should return 400 with MissingParamError if the id are not passed', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      query: {
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(badRequest(new MissingParamError('id')))
-  })
-
   test('Should calls AccountVerify with correct values', async () => {
     const { sut, accountConfirmationStub } = makeSut()
     const confirm = jest.spyOn(accountConfirmationStub, 'confirm')
