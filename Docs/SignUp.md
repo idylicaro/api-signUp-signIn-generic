@@ -12,7 +12,7 @@
 8. ✅ Gera um **token** de acesso a partir do ID do usuário
 9. ✅ **Atualiza** os dados do usuário com o token de acesso gerado
 10.✅ Retorna **200** com o token de acesso
-11.⛔ Confirmação do email
+11.✅ Confirmação do email (Account Confirmation Controller)
 > ## Exceções
 
 1. ✅ Retorna erro **404** se a API não existir

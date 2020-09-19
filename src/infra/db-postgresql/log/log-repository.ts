@@ -1,5 +1,5 @@
 import { LogErrorRepository } from '../../../data/protocols/db/log/log-error-respository'
-import knex from '../../knex/knex-environment'
+import knex from '../../../infra/knex/knex-environment'
 
 export class LogPostgreRepository implements LogErrorRepository {
   async logError (stack: string): Promise<void> {
